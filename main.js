@@ -8,7 +8,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     title: packageJson.name,
-    resizable: false,
+    resizable: true,
     titleBarStyle: 'hidden',
     webPreferences: {
       webSecurity: false

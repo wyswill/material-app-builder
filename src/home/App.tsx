@@ -1,5 +1,4 @@
 import React from 'react';
-import './less/home.less';
 import clsx from 'clsx';
 import {
   AppBar,
@@ -20,8 +19,9 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import MainPage from "./MainPage";
 
 const drawerWidth = 240;
 
@@ -29,6 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
         display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
       },
       appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -96,9 +98,40 @@ function App() {
     setOpen(false);
   };
 
+  /**
+   * 创建左侧侧边栏
+   */
+  function drawer() {
+    return (<Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+    >
+      <div className={classes.drawerHeader}>
+        <h3>菜单</h3>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
+        </IconButton>
+      </div>
+      <Divider/>
+      <List>
+        {['创建新项目', '打开项目',].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <CreateNewFolderIcon/> : <FolderOpenIcon/>}</ListItemIcon>
+              <ListItemText primary={text}/>
+            </ListItem>
+        ))}
+      </List>
+    </Drawer>);
+  }
+
   return (
       <div className={classes.root}>
-        <AppBar position="fixed" className={clsx(classes.appBar, {
+        <AppBar position="sticky" color="primary" className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}>
           <Toolbar>
@@ -114,32 +147,8 @@ function App() {
             <Typography variant='h5'>material-app-builder</Typography>
           </Toolbar>
         </AppBar>
-        <Drawer
-            className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            open={open}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-        >
-          <div className={classes.drawerHeader}>
-            <h3>菜单</h3>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
-            </IconButton>
-          </div>
-          <Divider/>
-          <List>
-            {['创建新项目', '打开项目',].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                  <ListItemText primary={text}/>
-                </ListItem>
-            ))}
-          </List>
-
-        </Drawer>
+        {drawer()}
+        {MainPage()}
       </div>
   );
 }
