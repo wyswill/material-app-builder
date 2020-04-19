@@ -9,10 +9,11 @@ import {
   Typography
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import BaseComponents from "./baseComponents";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   Components: {
-    width:'100%'
+    width: '100%'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -24,6 +25,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     color: theme.palette.text.secondary,
   },
 }));
+
+const options = [{
+  name: 'panner1',
+  headTitle: '基础组件',
+  component: BaseComponents
+}, {
+  name: 'panner2',
+  headTitle: '高级组件',
+  component: BaseComponents
+}]
 export default function Components() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -32,34 +43,22 @@ export default function Components() {
   };
   return (
       <div className={classes.Components}>
-        <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon/>}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
-          >
-            <Typography className={classes.heading}>基础组件</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              基础组件itmes
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon/>}
-              aria-controls="panel2bh-content"
-              id="panel2bh-header"
-          >
-            <Typography className={classes.heading}>高级组件</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              高级组件items
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        {
+          options.map((ele, index: number) => (
+              <ExpansionPanel expanded={expanded === ele.name} onChange={handleChange(ele.name)} key={index}>
+                <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon/>}
+                    aria-controls="panel1bh-content"
+                    id="panel1bh-header"
+                >
+                  <Typography className={classes.heading}>{ele.headTitle}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  {ele.component()}
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+          ))
+        }
       </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Components from "../Components/Components";
-import {makeStyles, createStyles, Theme, useTheme, Grid} from '@material-ui/core';
+import {makeStyles, createStyles, Theme, Grid} from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   content: {
@@ -9,13 +9,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     textAlign: 'center'
   },
   grid: {
-    borderRight: '1px solid'
+
   }
 }));
 export default function MainPage() {
   const classes = useStyles();
-  const theme = useTheme();
-  console.log(theme);
   return (
       <main className={classes.content}>
         <Grid container className={classes.grid}>{Components()}
